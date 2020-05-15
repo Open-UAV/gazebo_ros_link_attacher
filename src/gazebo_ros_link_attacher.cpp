@@ -34,7 +34,7 @@ namespace gazebo
     }
     
     this->world = _world;
-    this->physics = this->world->Physics();
+    this->physics = this->world->GetPhysicsEngine();
     this->attach_service_ = this->nh_.advertiseService("attach", &GazeboRosLinkAttacher::attach_callback, this);
     ROS_INFO_STREAM("Attach service at: " << this->nh_.resolveName("attach"));
     this->detach_service_ = this->nh_.advertiseService("detach", &GazeboRosLinkAttacher::detach_callback, this);
@@ -64,14 +64,14 @@ namespace gazebo
     j.model2 = model2;
     j.link2 = link2;
     ROS_DEBUG_STREAM("Getting BasePtr of " << model1);
-    physics::BasePtr b1 = this->world->ModelByName(model1);
+    physics::BasePtr b1 = this->world->GetModel(model1);
 
     if (b1 == NULL){
       ROS_ERROR_STREAM(model1 << " model was not found");
       return false;
     }
     ROS_DEBUG_STREAM("Getting BasePtr of " << model2);
-    physics::BasePtr b2 = this->world->ModelByName(model2);
+    physics::BasePtr b2 = this->world->GetModel(model2);
     if (b2 == NULL){
       ROS_ERROR_STREAM(model2 << " model was not found");
       return false;
@@ -93,7 +93,7 @@ namespace gazebo
         ROS_ERROR_STREAM("link1 inertia is NULL!");
     }
     else
-        ROS_DEBUG_STREAM("link1 inertia is not NULL, for example, mass is: " << l1->GetInertial()->Mass());
+        ROS_DEBUG_STREAM("link1 inertia is not NULL, for example, mass is: " << l1->GetInertial()->GetMass());
     j.l1 = l1;
     ROS_DEBUG_STREAM("Getting link: '" << link2 << "' from model: '" << model2 << "'");
     physics::LinkPtr l2 = m2->GetLink(link2);
@@ -105,7 +105,7 @@ namespace gazebo
         ROS_ERROR_STREAM("link2 inertia is NULL!");
     }
     else
-        ROS_DEBUG_STREAM("link2 inertia is not NULL, for example, mass is: " << l2->GetInertial()->Mass());
+        ROS_DEBUG_STREAM("link2 inertia is not NULL, for example, mass is: " << l2->GetInertial()->GetMass());
     j.l2 = l2;
 
     ROS_DEBUG_STREAM("Links are: "  << l1->GetName() << " and " << l2->GetName());
