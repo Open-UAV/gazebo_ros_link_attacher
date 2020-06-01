@@ -8,9 +8,9 @@ import numpy as np
 import math
 from std_msgs.msg import String
 
-DOCKING_DEGREE = 30
+DOCKING_DEGREE = 90
 
-DOCKING_RANGE = 0.6
+DOCKING_RANGE = 1
 
 global mode
 mode = None
